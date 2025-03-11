@@ -1,14 +1,22 @@
 {
-  "name": "api",
-  "version": "0.0.0",
-  "private": true,
+  "name": "port-plaisance-russell-api",
+  "version": "1.0.0",
+  "description": "API de gestion du port de plaisance de Russell",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "dev": "env-cmd -f ./env/.env.dev nodemon ./bin/www"
   },
   "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
     "express": "^4.21.2",
-    "morgan": "~1.9.1"
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.12.1"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "nodemon": "^3.1.9"
   }
 }
