@@ -3,33 +3,22 @@ const path = require('path');
 
 async function build() {
     try {
-        // Define source and destination directories
-        const srcDir = path.join(__dirname, '..');
-        const distDir = path.join(__dirname, '..', 'dist');
+        const rootDir = path.resolve(__dirname, '..');
+        const modelsDir = path.join(rootDir, 'src', 'models');
+        
+        // Ensure models directory exists
+        await fs.ensureDir(modelsDir);
 
-        // Ensure dist directory exists and is empty
-        await fs.emptyDir(distDir);
-
-        // Define files and directories to copy
-        const filesToCopy = [
-            'src',
-            'public',
-            'routes',
-            'bin',
-            'app.js',
-            'swagger.js',
-            'package.json'
-        ];
-
-        // Copy each file/directory
-        for (const file of filesToCopy) {
-            const src = path.join(srcDir, file);
-            const dest = path.join(distDir, file);
-            await fs.copy(src, dest);
-            console.log(`✅ Copied ${file}`);
+        // Copy User model if not exists
+        const userModelPath = path.join(modelsDir, 'User.js');
+        if (!fs.existsSync(userModelPath)) {
+            await fs.copyFile(
+                path.join(rootDir, 'src', 'models', 'User.js'),
+                userModelPath
+            );
         }
 
-        console.log('🎉 Build completed successfully');
+        console.log('✅ Build completed');
     } catch (error) {
         console.error('❌ Build failed:', error);
         process.exit(1);
