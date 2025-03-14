@@ -10,3 +10,4 @@ restartPolicyType = "ON_FAILURE"
 
 [nixpacks]
 node_version = "18.20.7"
+enable_cache = true
