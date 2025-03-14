@@ -2,47 +2,124 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Port de Plaisance Russell - Tableau de Bord</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title>Dashboard - Port de Plaisance</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 <body>
-    <div class="container">
-        <nav class="menu">
-            <h1>Port de Plaisance Russell</h1>
-            <div class="user-info">
-                <span id="username"></span>
-                <span id="email"></span>
-                <span id="currentDate"></span>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="nav-left">
+                <div class="user-info">
+                    <!-- User info will be inserted here -->
+                </div>
+                <div class="current-date">
+                    <!-- Current date will be inserted here -->
+                </div>
             </div>
-            <ul>
-                <li><a href="#" id="showCatways">Gestion des Catways</a></li>
-                <li><a href="#" id="showReservations">Gestion des Réservations</a></li>
-                <li><a href="#" id="showUsers">Gestion des Utilisateurs</a></li>
-                <li><a href="/api-docs">Documentation API</a></li>
-                <li><a href="#" id="logout">Déconnexion</a></li>
-            </ul>
-        </nav>
+            <div class="nav-links">
+                <a href="#overview" class="nav-link active">Accueil</a>
+                <a href="#catways" class="nav-link">Gestion des Catways</a>
+                <a href="#reservations" class="nav-link">Gestion des Réservations</a>
+                <a href="#users" class="nav-link">Gestion des Utilisateurs</a>
+                <a href="/api-docs" class="nav-link" target="_blank">Documentation API</a>
+                <button id="logout">Déconnexion</button>
+            </div>
+        </div>
+    </nav>
 
-        <main>
-            <section id="currentReservations">
-                <h2>Réservations en cours</h2>
-                <table id="reservationsTable">
+    <main class="container">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <h2>Tableau de Bord</h2>
+            <div class="current-reservations">
+                <h3>Réservations en cours</h3>
+                <table id="activeReservationsTable">
                     <thead>
                         <tr>
-                            <th>N° Catway</th>
+                            <th>Catway</th>
                             <th>Client</th>
                             <th>Bateau</th>
-                            <th>Date début</th>
-                            <th>Date fin</th>
+                            <th>Début</th>
+                            <th>Fin</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Filled dynamically -->
-                    </tbody>
+                    <tbody></tbody>
                 </table>
-            </section>
-        </main>
-    </div>
+            </div>
+        </section>
+
+        <!-- Catways Section -->
+        <section id="catways" class="section">
+            <h2>Gestion des Catways</h2>
+            <button class="add-btn" onclick="openCreateModal('catway')">Nouveau Catway</button>
+            <table id="catwaysTable">
+                <thead>
+                    <tr>
+                        <th>Numéro</th>
+                        <th>Type</th>
+                        <th>État</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- Reservations Section -->
+        <section id="reservations" class="section">
+            <h2>Gestion des Réservations</h2>
+            <button class="add-btn" onclick="openCreateModal('reservation')">Nouvelle Réservation</button>
+            <table id="reservationsTable">
+                <thead>
+                    <tr>
+                        <th>Catway</th>
+                        <th>Client</th>
+                        <th>Bateau</th>
+                        <th>Début</th>
+                        <th>Fin</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- Users Section -->
+        <section id="users" class="section">
+            <h2>Gestion des Utilisateurs</h2>
+            <button class="add-btn" onclick="openCreateModal('user')">Nouvel Utilisateur</button>
+            <table id="usersTable">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Rôle</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- Edit Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>Modifier</h3>
+                <form id="editForm"></form>
+            </div>
+        </div>
+
+        <!-- Create Modal -->
+        <div id="createModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>Nouveau</h3>
+                <form id="createForm"></form>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/apiService.js"></script>
     <script src="../js/dashboard.js"></script>
 </body>
 </html>

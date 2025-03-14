@@ -8,13 +8,11 @@ const reservationSchema = new mongoose.Schema({
     },
     clientName: {
         type: String,
-        required: true,
-        trim: true
+        required: true
     },
     boatName: {
         type: String,
-        required: true,
-        trim: true
+        required: true
     },
     startDate: {
         type: Date,
@@ -26,12 +24,4 @@ const reservationSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-// Validation that end date is after start date
-reservationSchema.pre('save', function(next) {
-    if (this.startDate >= this.endDate) {
-        next(new Error('La date de fin doit être après la date de début'));
-    }
-    next();
-});
-
-module.exports = mongoose.model('Reservation', reservationSchema);
+module.exports = mongoose.model('Reservation', reservationSchema);  

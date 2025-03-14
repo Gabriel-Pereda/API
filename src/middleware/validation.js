@@ -1,5 +1,3 @@
-// Validation middleware for auth, users, catways, and reservations
-
 const validateLogin = (req, res, next) => {
     const { email, password } = req.body;
     const errors = [];
@@ -20,27 +18,22 @@ const validateLogin = (req, res, next) => {
 };
 
 const validateUser = (req, res, next) => {
-    const { username, email, password } = req.body;
-    const errors = [];
+    const { email, password } = req.body;
 
-    if (!username || username.length < 3) {
-        errors.push('Nom d\'utilisateur requis (minimum 3 caractères)');
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: 'Invalid email format' });
     }
 
-    if (!email || !email.includes('@')) {
-        errors.push('Email valide requis');
-    }
-
-    if (!password || password.length < 6) {
-        errors.push('Mot de passe requis (minimum 6 caractères)');
-    }
-
-    if (errors.length > 0) {
-        return res.status(400).json({ errors });
+    // Password validation
+    if (!password || password.length < 8) {
+        return res.status(400).json({ message: 'Password must be at least 8 characters' });
     }
 
     next();
 };
+
 
 const validateCatway = (req, res, next) => {
     const { numeroCatway, typeCatway, etatCatway } = req.body;

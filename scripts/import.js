@@ -1,74 +1,49 @@
 const mongoose = require('mongoose');
-const fs = require('fs');
-const path = require('path');
-
+const { MongoClient } = require('mongodb');
 const Catway = require('../src/models/Catway');
 const Reservation = require('../src/models/Reservation');
+require('dotenv').config();
 
-// Connection string (replace with your actual connection string)
-const MONGODB_URI = "mongodb+srv://gabrielperedacarmona:4U8V6qmVSo4qx8d6@cluster0.patre.mongodb.net/marina";
+const MONGODB_URI = process.env.MONGODB_URI;
 
-// Sample data
-const catways = [
-    {
-        "numeroCatway": 1,
-        "typeCatway": "long",
-        "etatCatway": "Bon état"
-    },
-    {
-        "numeroCatway": 2,
-        "typeCatway": "court",
-        "etatCatway": "Nécessite réparation"
-    },
-    {
-        "numeroCatway": 3,
-        "typeCatway": "long",
-        "etatCatway": "Excellent état"
-    }
-];
-
-const reservations = [
-    {
-        "numeroCatway": 1,
-        "nomClient": "Jean Dupont",
-        "nomBateau": "Le Navigator",
-        "dateDebut": "2025-03-15",
-        "dateFin": "2025-03-20"
-    },
-    {
-        "numeroCatway": 2,
-        "nomClient": "Marie Martin",
-        "nomBateau": "Sea Explorer",
-        "dateDebut": "2025-03-18",
-        "dateFin": "2025-03-25"
-    }
-];
-
-async function importData() {
+async function verifyData() {
+    let client;
     try {
-        // Connect to MongoDB
+        // First connection to get raw data
+        client = new MongoClient(MONGODB_URI);
+        await client.connect();
+        const db = client.db("database");
+        
+        // Fetch and display existing data
+        const rawCatways = await db.collection('catways').find({}).toArray();
+        console.log('\n🚢 Catways found:', rawCatways.length);
+        console.log('Sample catway:', JSON.stringify(rawCatways[0], null, 2));
+        
+        const rawReservations = await db.collection('reservations').find({}).toArray();
+        console.log('\n📅 Reservations found:', rawReservations.length);
+        console.log('Sample reservation:', JSON.stringify(rawReservations[0], null, 2));
+
+        // Connect with Mongoose just to verify schema
         await mongoose.connect(MONGODB_URI);
-        console.log('Connected to MongoDB');
+        console.log('\n✅ Connected to MongoDB via Mongoose');
 
-        // Clear existing data
-        await Catway.deleteMany();
-        await Reservation.deleteMany();
-        console.log('Cleared existing data');
+        // Count documents using Mongoose models
+        const catwayCount = await Catway.countDocuments();
+        const reservationCount = await Reservation.countDocuments();
+        
+        console.log('\n📊 Mongoose Model Counts:');
+        console.log(`Catways: ${catwayCount}`);
+        console.log(`Reservations: ${reservationCount}`);
 
-        // Import catways
-        await Catway.insertMany(catways);
-        console.log('Catways imported successfully');
+        await mongoose.connection.close();
+        await client.close();
 
-        // Import reservations
-        await Reservation.insertMany(reservations);
-        console.log('Reservations imported successfully');
-
-        console.log('All data imported successfully');
-        process.exit(0);
     } catch (error) {
-        console.error('Error importing data:', error);
+        console.error('❌ Error:', error);
+        if (client) await client.close();
+        if (mongoose.connection.readyState !== 0) await mongoose.connection.close();
         process.exit(1);
     }
 }
 
-importData();
+verifyData();
