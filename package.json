@@ -9,7 +9,7 @@
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "admin": "node scripts/Admin.js",
-    "build": "node -e \"const fs=require('fs-extra');const path=require('path');const dirs=['src/models'];dirs.forEach(dir=>{const fullPath=path.join(process.cwd(),dir);if(!fs.existsSync(fullPath)){fs.mkdirpSync(fullPath)}});\"",
+    "build": "node scripts/ensure-models.js",
     "postinstall": "npm run build"
   },
   "engines": {

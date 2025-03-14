@@ -16,7 +16,7 @@ const reservationRoutes = require(path.join(paths.routes, 'reservationRoutes'));
 
 const app = express();
 
-
+require('events').EventEmitter.defaultMaxListeners = 15;
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' });
 });
