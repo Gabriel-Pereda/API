@@ -4,7 +4,9 @@
 
 # Dependencies
 node_modules/
-package-lock.json
+.env
+.DS_Store
+npm-debug.log*
 
 # Logs
 logs
