@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const path = require('path');
-const User = require(path.join(__dirname, '..', 'models', 'User'));
+const User = require('../models/User.js');
 
 const auth = async (req, res, next) => {
     try {
