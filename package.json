@@ -4,11 +4,11 @@
   "description": "API de gestion du port de plaisance de Russell",
   "scripts": {
     "start": "node bin/www",
-    "dev": "nodemon bin/www"
+    "dev": "nodemon bin/www",
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "admin": "node scripts/Admin.js",
-    "postinstall": "mkdir -p src/models && cp -r src/models/* src/models/"
+    "postinstall": "node -e \"const fs=require('fs'); const path=require('path'); const dir=path.join('src','models'); if(!fs.existsSync(dir)){fs.mkdirSync(dir,{recursive:true})}\""
   },
   "jest": {
     "testEnvironment": "node",
@@ -34,5 +34,8 @@
     "jest": "^29.7.0",
     "nodemon": "^3.1.9",
     "supertest": "^7.0.0"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
