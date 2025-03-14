@@ -8,7 +8,7 @@
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "admin": "node scripts/Admin.js",
-    "build": "mkdir -p src/models && cp models/* src/models/",
+    "build": "node scripts/build.js",
     "postinstall": "node -e \"const fs=require('fs'); const path=require('path'); const dir='src/models'; if(!fs.existsSync(dir)){fs.mkdirSync(dir,{recursive:true})};\""
   },
   "jest": {
