@@ -8,7 +8,8 @@
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "admin": "node scripts/Admin.js",
-    "postinstall": "node -e \"const fs=require('fs'); const path=require('path'); const dir=path.join('src','models'); if(!fs.existsSync(dir)){fs.mkdirSync(dir,{recursive:true})}\""
+    "build": "node scripts/build.js",
+    "postinstall": "node -e \"const fs=require('fs'); const path=require('path'); const dir='src/models'; if(!fs.existsSync(dir)){fs.mkdirSync(dir,{recursive:true})};\""
   },
   "jest": {
     "testEnvironment": "node",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "env-cmd": "^10.1.0",
+    "fs-extra": "^11.3.0",
     "jest": "^29.7.0",
     "nodemon": "^3.1.9",
     "supertest": "^7.0.0"
