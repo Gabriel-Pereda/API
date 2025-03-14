@@ -8,8 +8,8 @@
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "admin": "node scripts/Admin.js",
-    "build": "node -e \"const fs=require('fs'); const path=require('path'); ['src/models'].forEach(dir => {if(!fs.existsSync(dir)){fs.mkdirSync(dir, {recursive:true})}})\"",
-    "postinstall":"npm run build"
+    "build": "node scripts/build.js",
+    "postinstall": "npm run build"
   },
   "jest": {
     "testEnvironment": "node",
@@ -28,11 +28,11 @@
     "mongodb": "6.14",
     "mongoose": "^8.12.1",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "fs-extra": "^11.3.0"
   },
   "devDependencies": {
     "env-cmd": "^10.1.0",
-    "fs-extra": "^11.3.0",
     "jest": "^29.7.0",
     "nodemon": "^3.1.9",
     "supertest": "^7.0.0"
