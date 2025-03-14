@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../src/middleware/auth');
-const Reservation = require('../src/models/Reservation');
-const Catway = require('../src/models/Catway');
+const path = require('path');
 const { validateReservation, validateReservationUpdate } = require('../src/middleware/validation');
+const Reservation = require(path.join(__dirname, '..', 'src', 'models', 'Reservation'));
+const Catway = require(path.join(__dirname, '..', 'src', 'models', 'Catway'));
 
 /**
  * @swagger
