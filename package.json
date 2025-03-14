@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "API de gestion du port de plaisance de Russell",
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
+    "start": "node bin/www",
+    "dev": "nodemon bin/www"
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
-    "admin": "node scripts/Admin.js"
+    "admin": "node scripts/Admin.js",
+    "postinstall": "mkdir -p src/models && cp -r src/models/* src/models/"
   },
   "jest": {
     "testEnvironment": "node",
