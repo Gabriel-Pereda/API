@@ -1,39 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../src/middleware/auth');
-const User = require('../src/models/User');
-const { validateUser } = require('../src/middleware/validation');
+const path = require('path');
+const User = require(path.join(__dirname, '..', 'src', 'models', 'User'));
 
 /**
  * @swagger
- * /reservations/catways/{catwayNumber}/reservations/{id}:
- *   put:
- *     tags: [Reservations]
- *     summary: Met à jour une réservation
- *     parameters:
- *       - in: path
- *         name: catwayNumber
- *         required: true
- *         schema:
- *           type: number
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
+ * /users:
+ *   get:
+ *     tags: [Users]
+ *     summary: Récupère tous les utilisateurs
  *     security:
  *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Reservation'
  *     responses:
  *       200:
- *         description: Réservation mise à jour
- *       404:
- *         description: Réservation non trouvée
+ *         description: Liste des utilisateurs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
  */
 router.get('/', auth, async (req, res) => {
   try {

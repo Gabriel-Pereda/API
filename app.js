@@ -19,7 +19,7 @@ const app = express();
 require('events').EventEmitter.defaultMaxListeners = 15;
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' });
-});
+  });
 
 // Middleware setup
 app.use(cors());

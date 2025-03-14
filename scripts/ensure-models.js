@@ -37,6 +37,59 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
 module.exports = mongoose.model('User', userSchema);
 `;
 
+const reservationModel = `
+const mongoose = require('mongoose');
+
+const reservationSchema = new mongoose.Schema({
+    catwayNumber: {
+        type: Number,
+        required: true,
+        ref: 'Catway'
+    },
+    clientName: {
+        type: String,
+        required: true
+    },
+    boatName: {
+        type: String,
+        required: true
+    },
+    startDate: {
+        type: Date,
+        required: true
+    },
+    endDate: {
+        type: Date,
+        required: true
+    }
+}, { timestamps: true });
+
+module.exports = mongoose.model('Reservation', reservationSchema);
+`;
+
+const catwayModel = `
+const mongoose = require('mongoose');
+
+const catwaySchema = new mongoose.Schema({
+    catwayNumber: {
+        type: Number,
+        required: true,
+        unique: true
+    },
+    catwayType: {
+        type: String,
+        required: true,
+        enum: ['short', 'long']
+    },
+    catwayState: {
+        type: String,
+        required: true
+    }
+}, { timestamps: true });
+
+module.exports = mongoose.model('Catway', catwaySchema);
+`;
+
 // Ensure directories and files exist
 async function ensureModels() {
   try {
@@ -51,6 +104,20 @@ async function ensureModels() {
     if (!fs.existsSync(userModelPath)) {
       await fs.writeFile(userModelPath, userModel);
       console.log('✅ Created User.js model');
+    }
+
+    // Write Reservation.js if it doesn't exist
+    const reservationModelPath = path.join(modelsDir, 'Reservation.js');
+    if (!fs.existsSync(reservationModelPath)) {
+      await fs.writeFile(reservationModelPath, reservationModel);
+      console.log('✅ Created Reservation.js model');
+    }
+
+    // Write Catway.js if it doesn't exist
+    const catwayModelPath = path.join(modelsDir, 'Catway.js');
+    if (!fs.existsSync(catwayModelPath)) {
+      await fs.writeFile(catwayModelPath, catwayModel);
+      console.log('✅ Created Catway.js model');
     }
 
     console.log('✅ Models setup complete');
