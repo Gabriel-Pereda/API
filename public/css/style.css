@@ -1,3 +1,4 @@
+/* Global styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -14,6 +15,7 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
+/* Login form styles */
 .login-form {
     margin: 20px 0;
     padding: 20px;
@@ -28,6 +30,8 @@ body {
 label {
     display: block;
     margin-bottom: 5px;
+    color: #333;
+    font-weight: 500;
 }
 
 input {
@@ -35,6 +39,13 @@ input {
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 3px;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
 }
 
 button {
@@ -44,13 +55,91 @@ button {
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 button:hover {
     background-color: #0056b3;
 }
 
+/* API Documentation link */
 .api-doc {
     margin-top: 20px;
     text-align: center;
+}
+
+.api-doc a {
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #007bff;
+    border-radius: 3px;
+    transition: all 0.3s;
+}
+
+.api-doc a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Dashboard styles */
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+.edit-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    background-color: #218838;
+}
+
+/* Error message styles */
+.error-message {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px;
+    border-radius: 3px;
+    margin: 10px 0;
+}
+
+/* Success message styles */
+.success-message {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 3px;
+    margin: 10px 0;
 }

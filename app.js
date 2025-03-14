@@ -2,8 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const { specs } = require('./swagger');
 require('dotenv').config();
 
+// Import routes
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const catwayRoutes = require('./routes/catwayRoutes');
@@ -11,43 +14,82 @@ const reservationRoutes = require('./routes/reservationRoutes');
 
 const app = express();
 
-// Middleware
+// Middleware setup
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log('Connected to MongoDB');
-    console.log('Database:', mongoose.connection.db.databaseName);
-    // Log collection names
-    mongoose.connection.db.listCollections().toArray((err, collections) => {
-      if (err) console.log('Error getting collections:', err);
-      else console.log('Collections:', collections.map(c => c.name));
-    });
-  })
-  .catch(err => console.error('MongoDB connection error:', err));
+// MongoDB connection setup
+async function connectDB() {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI);
+        console.log('✅ Connected to MongoDB');
+        console.log('📁 Database:', mongoose.connection.db.databaseName);
+        
+        const collections = await mongoose.connection.db.listCollections().toArray();
+        console.log('📑 Collections:', collections.map(c => c.name));
+    } catch (error) {
+        console.error('❌ MongoDB connection error:', error);
+        process.exit(1);
+    }
+}
 
-// Basic route should be first
+connectDB();
+
+// API Documentation route
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+    swaggerOptions: {
+        persistAuthorization: true
+    },
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: "Port de Plaisance API Documentation"
+}));
+
+// Welcome route
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Marina Management API' });
+    res.sendFile(path.join(__dirname, 'public', 'html', 'index.html'));
 });
 
-// Routes
+// API Routes
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/catways', catwayRoutes);
-app.use('/catways', reservationRoutes); // Changed from '/' to '/catways'
+app.use('/reservations', reservationRoutes);
 
-// Error handler
+// 404 handler
+app.use((req, res, next) => {
+    res.status(404).json({
+        status: 'error',
+        message: 'Route not found'
+    });
+});
+
+// Global error handler
 app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({
-    message: err.message,
-    error: process.env.NODE_ENV === 'development' ? err : {}
-  });
+    console.error('❌ Error:', err);
+    
+    const status = err.status || 500;
+    const response = {
+        status: 'error',
+        message: err.message || 'Internal server error'
+    };
+
+    // Add stack trace in development
+    if (process.env.NODE_ENV === 'development') {
+        response.stack = err.stack;
+    }
+
+    res.status(status).json(response);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+    console.log('🛑 SIGTERM received. Shutting down gracefully...');
+    mongoose.connection.close(false, () => {
+        console.log('📤 MongoDB connection closed.');
+        process.exit(0);
+    });
 });
 
 module.exports = app;
