@@ -6,11 +6,13 @@ const swaggerUi = require('swagger-ui-express');
 const { specs } = require('./swagger');
 require('dotenv').config();
 
+const paths = require('./src/utils/paths');
+
 // Import routes
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-const catwayRoutes = require('./routes/catwayRoutes');
-const reservationRoutes = require('./routes/reservationRoutes');
+const authRoutes = require(path.join(paths.routes, 'authRoutes'));
+const userRoutes = require(path.join(paths.routes, 'userRoutes'));
+const catwayRoutes = require(path.join(paths.routes, 'catwayRoutes'));
+const reservationRoutes = require(path.join(paths.routes, 'reservationRoutes'));
 
 const app = express();
 
