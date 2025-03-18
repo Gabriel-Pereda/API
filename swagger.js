@@ -129,7 +129,8 @@ const options = {
             { name: 'Auth', description: 'Opérations d\'authentification' },
             { name: 'Catways', description: 'Gestion des catways' },
             { name: 'Reservations', description: 'Gestion des réservations' },
-            { name: 'Users', description: 'Gestion des utilisateurs' }
+            { name: 'Users', description: 'Gestion des utilisateurs' },
+            { name: 'Admin', description: 'Opérations d\'administration' }
         ]
     },
     apis: ['./routes/*.js']
