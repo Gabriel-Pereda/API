@@ -1,7 +1,24 @@
 class ApiService {
-    constructor(baseUrl = 'http://localhost:3000') {
-        this.baseUrl = baseUrl;
+    constructor(baseUrl = '') {
+        // Let's make this more flexible
+        if (!baseUrl) {
+            // No URL provided, use the current origin
+            this.baseUrl = window.location.origin;
+            console.log('Using current origin as API URL:', this.baseUrl);
+        } else {
+            // URL was explicitly provided
+            this.baseUrl = baseUrl;
+            console.log('Using provided API URL:', this.baseUrl);
+        }
+        
         this.token = localStorage.getItem('token');
+        
+        // Debug output
+        if (this.token) {
+            console.log('Token found in localStorage');
+        } else {
+            console.warn('No authentication token found');
+        }
     }
 
     async request(endpoint, options = {}) {
@@ -10,18 +27,21 @@ class ApiService {
             ...(this.token && { Authorization: `Bearer ${this.token}` }),
             ...options.headers
         };
-
+    
+        console.log(`Sending request to ${endpoint} with token: ${this.token ? 'Yes' : 'No'}`);
+    
         try {
             const response = await fetch(`${this.baseUrl}${endpoint}`, {
                 ...options,
                 headers
             });
-
+    
             if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || response.statusText);
+                console.error(`API Error: ${response.status} ${response.statusText}`);
+                const error = await response.json().catch(() => ({}));
+                throw new Error(error.message || error.error || response.statusText);
             }
-
+    
             return response.json();
         } catch (error) {
             console.error(`API Error (${endpoint}):`, error);

@@ -96,6 +96,21 @@ const options = {
                         }
                     }
                 },
+                AdminLog: {
+                    type: 'object',
+                    required: ['action', 'timestamp'],
+                    properties: {
+                        action: {
+                            type: 'string',
+                            description: 'Action performed by the admin'
+                        },
+                        timestamp: {
+                            type: 'string',
+                            format: 'date-time',
+                            description: 'Timestamp of the action'
+                        }
+                    }
+                },
                 Error: {
                     type: 'object',
                     properties: {
@@ -114,7 +129,8 @@ const options = {
             { name: 'Auth', description: 'Opérations d\'authentification' },
             { name: 'Catways', description: 'Gestion des catways' },
             { name: 'Reservations', description: 'Gestion des réservations' },
-            { name: 'Users', description: 'Gestion des utilisateurs' }
+            { name: 'Users', description: 'Gestion des utilisateurs' },
+            { name: 'Admin', description: 'Opérations d\'administration' }
         ]
     },
     apis: ['./routes/*.js']
